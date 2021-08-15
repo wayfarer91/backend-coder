@@ -28,6 +28,9 @@ app.get("/", (req, res) => {
 
 routerProducto.get("/", (req, res) => {
   try {
+    if (productos.length === 0) {
+      throw new EmptyArrayException();
+    }
     res.status(200).send(productos);
   } catch (error) {
     res.status(400).json({ error: "No existen productos en la base." });
@@ -63,7 +66,6 @@ routerProducto.delete("/:id", (req, res) => {
     if (productos.length < id) {
       throw new WrongIndexException();
     }
-
     const index = parseInt(id) - 1;
     const eliminado = productos[index];
     productos.splice(index, 1);
