@@ -22,12 +22,6 @@ const routerProducto = new Router();
 
 // Endpoints
 
-routerProducto.get("/", (req, res) => {
-  res.send({
-    productos,
-  });
-});
-
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/files/index.html");
 });
@@ -43,6 +37,9 @@ routerProducto.get("/", (req, res) => {
 routerProducto.get("/:id", (req, res) => {
   const { id } = req.params;
   try {
+    if (productos.length < id) {
+      throw new WrongIndexException();
+    }
     res.status(200).send(productos[id - 1]);
   } catch (error) {
     res.status(400).json({ error: "Producto no encontrado" });
@@ -63,9 +60,13 @@ routerProducto.post("/", (req, res) => {
 routerProducto.delete("/:id", (req, res) => {
   const { id } = req.params;
   try {
+    if (productos.length < id) {
+      throw new WrongIndexException();
+    }
+
     const index = parseInt(id) - 1;
     const eliminado = productos[index];
-    productos = productos.splice(index, 1);
+    productos.splice(index, 1);
 
     res.status(200).json({ eliminado: eliminado });
   } catch (error) {
