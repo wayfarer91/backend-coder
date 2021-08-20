@@ -8,13 +8,9 @@ app.use("/public", express.static("./src/files"));
 
 // Storage
 
-let productos = [
-  {
-    title: "Book",
-    price: 5,
-    thumbnail: "cool.url",
-  },
-];
+let productos = [];
+
+let id = 0;
 
 // Router
 
@@ -50,14 +46,23 @@ routerProducto.get("/:id", (req, res) => {
 });
 
 routerProducto.post("/", (req, res) => {
+
   const { title, price, thumbnail } = req.body;
+
+  id++;
+
   const producto = {
     title: title,
     price: parseInt(price),
     thumbnail: thumbnail,
   };
-  productos = productos.concat(producto);
-  res.json(producto);
+
+  productos.push({
+    id,
+    producto
+  })
+
+  res.json({id, producto});
 });
 
 routerProducto.delete("/:id", (req, res) => {
@@ -76,6 +81,29 @@ routerProducto.delete("/:id", (req, res) => {
   }
 });
 
+routerProducto.put("/:id", (req, res) => {
+  const { id } = req.params;
+  const { title, price, thumbnail } = req.body;
+
+  const modificado = {
+    title: title,
+    price: parseInt(price),
+    thumbnail: thumbnail,
+  };
+  
+  try {
+    if (productos.length < id) {
+      throw new WrongIndexException();
+    }
+    const index = parseInt(id) - 1;
+    productos[index] = modificado
+
+    res.status(200).json({ modificado: modificado });
+  } catch (error) {
+    res.status(400).json({ error: "Producto no encontrado" });
+  }
+});
+
 app.use("/api/productos", routerProducto);
 
 const PORT = 8080;
@@ -83,3 +111,4 @@ const PORT = 8080;
 app.listen(PORT, () => {
   console.log(`Server on port ${PORT}`);
 });
+
