@@ -1,9 +1,9 @@
 <div>
   <h3>Datos</h3>
   <form action="/productos" method="POST">
-    Title <input type="text" name="title">
-    Price <input type="number"  name="price">
-    Thumbnail <input type="text" name="thumbnail">
+    <%=producto.title%> <input type="text" name="title">
+    <%=producto.price%> <input type="number"  name="price">
+    <%=producto.thumbnail%> <input type="text" name="thumbnail">
     <button type="submit">Enviar data</button>
   </form>
   <br>
