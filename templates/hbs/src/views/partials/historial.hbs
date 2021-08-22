@@ -1,0 +1,24 @@
+<div>
+  <h3>Historial</h3>
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Price</th>
+      <th>Thumbnail</th>
+    </tr>
+    {{#each productos}}
+      <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.producto.title}}</td>
+        <td>{{this.producto.price}}</td>
+        <td>{{this.producto.thumbnail}}</td>
+      </tr>
+      {{/each}}
+  </table>
+<br>
+  <form action="/" method="GET">
+    <button type="submit">Añadir producto</button>
+  </form>
+</br>
+</div>

@@ -2,13 +2,31 @@ const express = require("express");
 const { Router } = express;
 
 const app = express();
+
+const handlebars = require('express-handlebars')
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// EJS engine
 
-app.set('view engine', 'ejs')
+// HBS engine
 
+app.engine(
+	'hbs',
+	handlebars({
+		extname: '.hbs',
+		defaultLayout: 'index.hbs',
+		// eslint-disable-next-line no-undef
+		layoutsDir: __dirname + '/views/layouts',
+		// eslint-disable-next-line no-undef
+		partialsDir: __dirname + '/views/partials',
+	}),
+)
+
+app.use(express.static('public'))
+
+app.set('views', './src/views')
+app.set('view engine', 'hbs')
 
 // Storage
 
@@ -23,17 +41,15 @@ const routerProducto = new Router();
 // Endpoints
 
 app.get('/', (req, res) => {
-  const producto = {title: 'Title',
-              price: 'Price',
-              thumbnail: 'Thumbnail'
-          }
-	res.render('../src/views/index', {
-		producto,
+	res.render('index', {
+		productos,
+		exist: false,
 	})
 })
 
+
 routerProducto.get('/', (req, res) => {
-	res.render('../src/views/productos', {
+	res.render('productos', {
 		productos,
 	})
 })

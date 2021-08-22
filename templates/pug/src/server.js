@@ -5,10 +5,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// EJS engine
+// PUG engine
 
-app.set('view engine', 'ejs')
-
+app.set('views', './src/views')
+app.set('view engine', 'pug')
 
 // Storage
 
@@ -23,18 +23,17 @@ const routerProducto = new Router();
 // Endpoints
 
 app.get('/', (req, res) => {
-  const producto = {title: 'Title',
-              price: 'Price',
-              thumbnail: 'Thumbnail'
-          }
-	res.render('../src/views/index', {
-		producto,
+	res.render('index', {
+		title: 'Title',
+    price: 'Price',
+    thumbnail: 'Thumbnail'
 	})
 })
 
 routerProducto.get('/', (req, res) => {
-	res.render('../src/views/productos', {
-		productos,
+  const { query } = req
+	res.render('productos', {
+		...query,
 	})
 })
 
