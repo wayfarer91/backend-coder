@@ -1,0 +1,19 @@
+<div>
+  <h3>Historial</h3>
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Price</th>
+      <th>Thumbnail</th>
+    </tr>
+    <% productos.forEach(function(producto){ %>
+      <tr>
+        <td><%= producto.id %></td>
+        <td><%= producto.producto.title %></td>
+        <td><%= producto.producto.price %></td>
+        <td><%= producto.producto.thumbnail %></td>
+      </tr>
+    <% }) %>
+  </table>
+</div>

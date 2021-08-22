@@ -4,7 +4,11 @@ const { Router } = express;
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/public", express.static("./src/files"));
+
+// EJS engine
+
+app.set('view engine', 'ejs')
+
 
 // Storage
 
@@ -18,20 +22,17 @@ const routerProducto = new Router();
 
 // Endpoints
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/files/index.html");
-});
+app.get('/', (req, res) => {
+	res.render('../src/views/index', {
+		productos,
+	})
+})
 
-routerProducto.get("/", (req, res) => {
-  try {
-    if (productos.length === 0) {
-      throw new EmptyArrayException();
-    }
-    res.status(200).send(productos);
-  } catch (error) {
-    res.status(400).json({ error: "No existen productos en la base." });
-  }
-});
+routerProducto.get('/', (req, res) => {
+	res.render('../src/views/productos', {
+		productos,
+	})
+})
 
 routerProducto.get("/:id", (req, res) => {
   const { id } = req.params;
@@ -62,7 +63,7 @@ routerProducto.post("/", (req, res) => {
     producto
   })
 
-  res.json({id, producto});
+  res.redirect('/productos');
 });
 
 routerProducto.delete("/:id", (req, res) => {
@@ -104,7 +105,7 @@ routerProducto.put("/:id", (req, res) => {
   }
 });
 
-app.use("/api/productos", routerProducto);
+app.use("/productos", routerProducto);
 
 const PORT = 8080;
 
