@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="/socket.io/socket.io.js"></script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi tienda</title>
+  <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('../partials/formulario') %>
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Title</th>
+      <th>Price</th>
+      <th>Thumbnail</th>
+    </tr>
+    </tr>
+
+      <tr id='productos'>
+        <ul></ul>
+      </tr>
+                </table>
+    <script>
+      const socket = io()
+      const title = document.getElementById("title")
+      const price = document.getElementById("price")
+      const thumbnail = document.getElementById("thumbnail")
+
+      const submit = document.getElementById("submit").addEventListener('click', () => {
+        socket.emit('messageFront', { title: title.value, price: price.value, thumbnail: thumbnail.value })
+      })
+      socket.on('messageBackend', (data) => {
+        let inner = ''
+        console.log(data)
+        data.map((producto) => {
+        
+          inner += `
+
+
+                <td>${producto.id}</td>
+                <td>${producto.producto.title}</td>
+                <td>${producto.producto.price}</td>
+                <td>${producto.producto.thumbnail}</td>
+
+
+          `
+        })
+        document.getElementById('productos').innerHTML = inner
+      })
+    </script>
+</body>
+
+</html>
