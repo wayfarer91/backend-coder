@@ -1,0 +1,15 @@
+db.productos.insert({"title":"Escuadra","price":490,"thumbnail":"https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-256.png","id":0})
+
+db.productos.find({"price": {$lt: 1000}})
+
+db.productos.find({"price": {$nin: [1000, 3000]}})
+
+db.productos.find({"price": {$gt: 3000}})
+
+db.productos.find({}).sort({"price":-1}).skip(2).limit(1)
+
+db.productos.update({}, {$set: {"stock": 100}}, false, true)
+
+db.productos.remove({"price": {$lt: 1000}})
+
+db.createUser({"user": "pepe", "pwd": "asd456", "roles":["read"]})

@@ -1,0 +1,1 @@
+export * as productsControllers from './products.controllers.js'
